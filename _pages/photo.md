@@ -13,7 +13,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2023_jun_11_tunnel_bluffs.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2023_jun_11_tunnel_bluffs.jpg" title="2023_jun_11_tunnel_bluffs" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -26,7 +26,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2023_apr_27_ubc.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2023_apr_27_ubc.jpg" title="2023_apr_27_ubc" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -39,7 +39,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2023_apr_5_deep_cove.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2023_apr_5_deep_cove.jpg" title="2023_apr_5_deep_cove" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -48,7 +48,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2023_apr_5_quarry_rock.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2023_apr_5_quarry_rock.jpg" title="2023_apr_5_quarry_rock" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -61,7 +61,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2022_dec_15_ubc.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2022_dec_15_ubc.jpg" title="2022_dec_15_ubc" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -74,7 +74,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2022_oct_15_cypress_1.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2022_oct_15_cypress_1.jpg" title="2022_oct_15_cypress_1" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -83,7 +83,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2022_oct_15_cypress_2.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2022_oct_15_cypress_2.jpg" title="2022_oct_15_cypress_2" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -92,7 +92,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2022_oct_15_eagle_bluffs.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2022_oct_15_eagle_bluffs.jpg" title="2022_oct_15_eagle_bluffs" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
@@ -105,7 +105,7 @@ horizontal: false
 
 <div class="row">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.html path="assets/img/2022_jun_1_lynn_canyon.jpg" title="example image" class="img-fluid rounded z-depth-1" %}
+        {% include figure.html path="assets/img/2022_jun_1_lynn_canyon.jpg" title="2022_jun_1_lynn_canyon" class="img-fluid rounded z-depth-1" %}
     </div>
 </div>
 <div class="caption">
