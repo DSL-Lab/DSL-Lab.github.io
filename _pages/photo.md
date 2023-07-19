@@ -1,6 +1,6 @@
 ---
 layout: page
-title: photo
+title: photos
 permalink: /photo/
 description: Photos of group events. 
 nav: true
