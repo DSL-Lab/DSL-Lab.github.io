@@ -1,12 +1,18 @@
 github_users:
-  - torvalds
-  - alshedivat
-
+  # - DSL-Lab
+  - lrjconan
+  - qiyan98
+  - smahdavi4
+  - jojo23333
+  - aditya10  
+  - MasoudMo
+  - ljh0v0
+  - michaelfliu
+  
 github_repos:
-  - alshedivat/al-folio
-  - twbs/bootstrap
-  - jekyll/jekyll
-  - jquery/jquery
-  - FortAwesome/Font-Awesome
-  - jpswalsh/academicons
-  - mathjax/MathJax
+  - DSL-Lab/GRBM
+  - DSL-Lab/Specformer
+  - DSL-Lab/clrs
+  - DSL-Lab/echognn
+  - DSL-Lab/SwinGNN
+  - DSL-Lab/HPC_helper
