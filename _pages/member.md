@@ -30,6 +30,7 @@ nav_order: 3
 - Felix Fu (Undergrad at UBC, WLIURA)
 - Jade Clement (Undergrad at University of Toronto)
 - Evan Liu (Undergrad at UBC)
+- Youran Qu (Undergrad at Peking University)
 
 
 **Alumni**
@@ -45,8 +46,10 @@ nav_order: 3
 - Joshua White (Undergrad at UBC)
 - Sheng Yang (Undergrad at Huazhong University of Science and Technology)
 
-
 **Collaborating Students**
 - Xiang Gao (PhD at Peking University)
 - Bian Du (PhD at Peking University)
 - Bicheng Xu (PhD at UBC)
+- Nima Kondori (PhD at UBC)
+- Hooman Vaseli (PhD at UBC)
+- Lei Huang (PhD at UBC)
