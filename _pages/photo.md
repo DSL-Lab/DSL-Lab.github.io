@@ -9,6 +9,19 @@ display_categories: [work, fun]
 horizontal: false
 ---
 
+
+***2023 Jul. 28, hiking at St. Mark's Summit.***
+
+<div class="row">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.html path="assets/img/2023_jul_28_st_mark.jpg" title="2023_jul_28_st_mark" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+    Youran, Qi, Jade, Michael, and Sadegh (2nd row from left to right). Anthony, Renjie, Xue, and Jiahe (1st row from left to right).    
+</div>
+
+
 ***2023 Jun. 11, hiking at Tunnel Bluffs.***
 
 <div class="row">

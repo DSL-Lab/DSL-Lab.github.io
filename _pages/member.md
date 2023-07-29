@@ -23,7 +23,7 @@ nav_order: 3
 
 
 **Visiting Students**
-- Xue Yu (PhD student at Renmin University of China)
+- Xue Yu (PhD at Renmin University of China)
 - Daniel Yang (Undergrad at National Taiwan University)
 - Yutong Zhang (Undergrad at UBC)
 - Anthony Cheng Xian (Undergrad at UBC, USRA)
@@ -31,6 +31,7 @@ nav_order: 3
 - Jade Clement (Undergrad at University of Toronto)
 - Evan Liu (Undergrad at UBC)
 - Youran Qu (Undergrad at Peking University)
+- Wenliang Liu (PhD at Zhejiang University)
 
 
 **Alumni**
