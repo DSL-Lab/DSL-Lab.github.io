@@ -13,7 +13,6 @@ nav_order: 3
 **Graduate Students**
 - [Muchen Li](https://jojoml.github.io/) (CS PhD co-supervised with Leonid Sigal)
 - [Qi Yan](https://qiyan98.github.io/) (ECE PhD co-supervised with Lele Wang)
-- [Hanwen Liang](https://scholar.google.ca/citations?user=mrOHvI8AAAAJ&hl=en) (ECE PhD)
 - [Sadegh Mahdavi](https://smahdavi.com/) (ECE PhD co-supervised with Christos Thrampoulidis)
 - Donglin Yang (ECE PhD)
 - Yuanpei Gao (ECE PhD)
@@ -21,6 +20,7 @@ nav_order: 3
 - Jiahe Liu (ECE MASc co-supervised with Lele Wang)
 - Michael Liu (CS MSc co-supervised with Nick Harvey and Mijung Park)
 
+<!-- - [Hanwen Liang](https://scholar.google.ca/citations?user=mrOHvI8AAAAJ&hl=en) (ECE PhD) -->
 
 **Visiting Students**
 - Xue Yu (PhD at Renmin University of China)
