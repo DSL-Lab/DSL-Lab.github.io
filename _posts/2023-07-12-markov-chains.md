@@ -1,9 +1,16 @@
 ---
-title: Discrete Markov Chains
-date: 2023-07-12 18:00:00
-tags: Markov Chains
-categories: Reading Group
-mathjax: true
+layout: distill
+title: Markov Chains
+description: An introduction to Markov Chains. 
+tags: probability, random process, Markov Chains
+giscus_comments: true
+date: 2023-07-12
+featured: true
+
+authors:
+  - name: Xue Yu
+    affiliations:
+      name: Renmin University of China/UBC
 ---
 
 
@@ -89,7 +96,7 @@ Let $\mu_{i} = \sum_{t \geq 1} t \cdot r_{i,i}^{t}$ denote the expected time to 
 
 Here we give an example of a Markov chain that has null recurrent states. Consider the following markov chain whose states are the positive integers.
 
-![Fig. 1. An example of a Markov chain that has null recurrent states ](./Markov-Chains/image.png)
+![Fig. 1. An example of a Markov chain that has null recurrent states ](assets/img/markov_chains/image.png)
 
 Starting at state 1, the probability of not having returned to state 1 within the first $t$ steps is
 $$
@@ -128,7 +135,7 @@ A state $i$ is periodic means that for $s = k, 2k, 3k,...$, $P(X_{t+s}= j | X_t 
 
 Consider the two-state “broken printer” Markov chain:
 
-![Transition diagram for the two-state broken printer chain](./Markov-Chains/2023-07-22-11-00-52.png)
+![Transition diagram for the two-state broken printer chain](assets/img/markov_chains/2023-07-22-11-00-52.png)
 
 There are two state (0 and 1) in this Markov chain, and assume that the initial distribution is
 $$
