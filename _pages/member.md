@@ -53,7 +53,7 @@ nav_order: 3
 - Xue Yu (Stats PhD at Renmin University of China)
 - [Deyu Bo](https://bdy9527.github.io/) (CS PhD at Beijing University of Posts and Telecommunications, now research fellow at National University of Singapore)
 - Zhengyang Liang (CS Undergrad at Tongji University)
-- Joshua White (ENPH Undergrad at UBC, now Engineer at Tesla)
+- Joshua White (EnPh Undergrad at UBC, now Engineer at Tesla)
 
 
 **Collaborating Students**
