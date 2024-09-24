@@ -29,7 +29,7 @@ Our long-term research goals revolve around:
 In particular, our current research areas involve:
 - Deep Generative Models
 - Geometric Deep Learning
-- Algorithmic Reasoning with Transformers (e.g., LLMs)
+- Math/Algorithmic Reasoning with Transformers (e.g., LLMs)
 - Probabilistic Inference
 - Visual Understanding and Reasoning
 - Motion Prediction and Planning in Self-driving
