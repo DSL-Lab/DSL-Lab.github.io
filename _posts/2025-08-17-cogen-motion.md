@@ -12,7 +12,7 @@ authors:
     url: "https://qiyan98.github.io/"
     affiliations:
       name: UBC
-  - name: Yingyu Fu
+  - name: Yuxiang Fu
     url: "https://felix-yuxiang.github.io/"
     affiliations:
       name: UBC
