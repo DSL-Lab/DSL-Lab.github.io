@@ -125,7 +125,7 @@ where $$v_\theta$$ is the parametrized vector field approximating the straight f
 ### Data-Space Predictive Learning Objectives
 
 From an engineering standpoint, a somewhat **bitter lesson** we encountered is that **existing predictive learning objectives remain remarkably strong**. Despite the appeal of noise-prediction formulations (e.g., $\epsilon$-prediction introduced in DDPM <d-cite key="ho2020denoising"></d-cite> and later adopted in flow matching <d-cite key="lipman2022flow"></d-cite>), straightforward predictive objectives in the data space—such as direct $$\hat{x}_0$$ reconstruction in DDPM notation<d-footnote>
-Note that we follow the flow matching notations in <d-cite key="lipman2022flow"></d-cite> to use $t=1$ as the data distribution and $t=0$ as the noise distribution, which is opposite to the original DDPM notations in <d-cite key="ho2020denoising"></d-cite>.</d-footnote>—consistently yielded more stable convergence.
+Note that we follow the flow matching notations in <d-cite key="lipman2022flow"></d-cite> to use $t=1$ as the data distribution and $t=0$ as the noise distribution, which is opposite to the original DDPM notations in <d-cite key="ho2020denoising"></d-cite>.</d-footnote>—consistently yields more stable convergence.
 
 
 Concretely, by rearranging the original linear flow objective, we define a neural network
@@ -143,7 +143,7 @@ $$
 Our empirical observation is that data-space predictive learning objectives outperform denoising objectives. We argue that this is largely influenced by the current evaluation protocol, which heavily rewards model outputs that are close to the ground truth.  
 
 During training, the original denoising target matches the vector field $Y^1 - Y^0$, defined as the difference between the data sample (future trajectory) and the noise sample (drawn from the noise distribution). Under the current proximity-based metrics, this objective is harder to optimize than the predictive objective because of the stochasticity introduced by $Y^0$, as the metrics do not adequately reward diverse forecasting. Moreover, during the sampling process, small errors in the vector field model $v_\theta$—measured with respect to the single ground-truth velocity field at intermediate time steps—can be amplified through subsequent iterative steps. Consequently, increasing inference-time compute may not necessarily improve results without incorporating regularization from the data-space loss <d-footnote>
-Interestingly, in our experiments, we found that flow-matching ODEs—thanks to their less noisy inference process—usually perform more stably than diffusion-model SDEs, which is somewhat surprising. In image generation, as shown in SiT <d-cite key="ma2024sit"></d-cite>, ODE-based samplers are generally weaker than SDE-based samplers.
+Interestingly, in our experiments, we found that flow-matching ODEs—thanks to their less noisy inference process—usually perform more stably than diffusion-model SDEs, which is surprising. In image generation, as shown in SiT <d-cite key="ma2024sit"></d-cite>, ODE-based samplers are generally weaker than SDE-based samplers.
 </d-footnote>.
 
 ### Joint Multi-Modal Learning Losses
@@ -164,7 +164,7 @@ We acknowledge that some prior works, such as MotionLM <d-cite key="seff2023moti
 
 ## Exploring Inference Acceleration
 
-To accelerate inference in flow-matching models, which typically require tens or even hundreds of iterations for ODE simulation, we adopt a somewhat underrated idea from the image generation literature: conditional **IMLE (implicit maximum likelihood estimation)** <d-cite key="li2018implicit, li2019diverse"></d-cite>. IMLE provides a way to distill an iterative generative model into a **one-step generator**.  
+To accelerate inference in flow-matching models, which typically require tens or even hundreds of iterations for ODE simulation, we adopt an underrated idea from the image generation literature: conditional **IMLE (implicit maximum likelihood estimation)** <d-cite key="li2018implicit, li2019diverse"></d-cite>. IMLE provides a way to distill an iterative generative model into a **one-step generator**.  
 
 The IMLE family consists of generative models designed to produce diverse samples in a single forward pass, conceptually similar to the generator in GANs <d-cite key="goodfellow2020generative"></d-cite>. In our setting, we construct a conditional IMLE model that takes the same context $$C$$ as the teacher flow-matching model and learns to match the teacher’s motion prediction results directly in the data space.  
 
