@@ -32,10 +32,9 @@ toc:
     - name: Align Your Flow
   - name: Connections
   - subsections:
-    - name: Shortcut Model
+    - name: Shortcut Models
     - name: ReFlow
     - name: Inductive Moment Matching
-    - name: Distribution Matching Distillation
   - name: Closing Thoughts
 
 # Below is an example of injecting additional post-specific styles.
@@ -59,9 +58,9 @@ toc:
 
 ## Introduction
 
-Diffusion and flow-based models<d-cite key="ho2020denoising"></d-cite> have taken over generative AI space, enabling unprecedented capabilities in videos, audios, and text generation. Nonetheless, there is a caveat - they are painfully **slow** during inference. Generating a single high-quality sample will require running through hundreds of denoising steps, which translate to high costs and long wait times. 
+Diffusion and flow-based models<d-cite key="ho2020denoising, lipman_flow_2023, albergo2023stochastic, liu2022flow"></d-cite> have taken over generative AI space, enabling unprecedented capabilities in videos, audios, and text generation. Nonetheless, there is a caveat - they are painfully **slow** during inference. Generating a single high-quality sample will require running through hundreds of denoising steps, which translate to high costs and long wait times. 
 
-At its core, diffusion models (equivalently, flow matching models) operate by iteratively refining noisy data into high-quality outputs through a series of denoising steps. Similar to divide-and-conquer algorithms <d-footnote>Common ones like Mergesort, locating the median and Fast Fourior Transform.</d-footnote> , diffusion models first *divide* the difficult denoising task into subtasks and *conquer* one of these at a time during training. To obtain a sample, we make a sequence of recursive predictions which means we need to *conquer* the entire task end-to-end. 
+At its core, diffusion models (equivalently, flow matching models) operate by iteratively refining noisy data into high-quality outputs through a series of denoising steps. Similar to divide-and-conquer algorithms <d-footnote>Common ones like Mergesort, locating the median and Fast Fourior Transform.</d-footnote>, diffusion models first *divide* the difficult denoising task into subtasks and *conquer* one of these at a time during training. To obtain a sample, we make a sequence of recursive predictions which means we need to *conquer* the entire task end-to-end. 
 
 This challenge has spurred research into acceleration strategies across multiple grandular levels, including hardware optimization, mixed precision training<d-cite key="micikevicius2017mixed"></d-cite>, [quantization](https://github.com/bitsandbytes-foundation/bitsandbytes), and parameter-efficient fine-tuning<d-cite key="hu2021lora"></d-cite>. In this blog, we focus on an orthogonal approach, **ODE distillation**, which minimize Number of Function Evaluations (NFEs) so that we can generate high-quality samples with as few denoising steps as possible.
 
@@ -92,7 +91,7 @@ $$\mathbf{x}_t = \alpha(t)\mathbf{x}_0 + \beta(t)\mathbf{x}_1$$ where $$\alpha(t
 
 
 
-We provide some popular instances <d-footnote>We ignore the diffusion models with SDE formulation like DDPM on purpose since we concentrate on ODE distillation in this blog.</d-footnote> of these schedules in the table below. 
+We provide some popular instances <d-footnote>We ignore the diffusion models with SDE formulation like DDPM<d-cite key="ho2020denoising"></d-cite> or ScoreSDE<d-cite key="song2020score"></d-cite> on purpose since we concentrate on ODE distillation in this blog.</d-footnote> of these schedules in the table below. 
 
 | Method | Probability Path $p_t$ | Vector Field $u(\mathbf{x}_t, t\vert\mathbf{x}_0)$ |
 |--------|---------------------------|------------------------------|
@@ -104,7 +103,7 @@ We provide some popular instances <d-footnote>We ignore the diffusion models wit
 
 The simplest form of conditional probability path is $$\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\mathbf{x}_1$$ with the corresponding default conditional velocity field OT target $$v(\mathbf{x}_t, t \vert \mathbf{x}_0)=\mathbb{E}[\dot{\mathbf{x}}_t\vert \mathbf{x}_0]=\mathbf{x}_1- \mathbf{x}_0.$$
 
-Borrowed from this [slide](https://rectifiedflow.github.io/assets/slides/icml_07_distillation.pdf) at ICML2025, the objective of ODE distillation have been categorized into three cases, i.e., (a) forward loss, (b) backward loss and (c) tri-consistency loss. 
+Borrowed from this [slide](https://rectifiedflow.github.io/assets/slides/icml_07_distillation.pdf) at ICML2025, the objective of ODE distillation have been categorized into three cases, i.e., (a) **forward loss**, (b) **backward loss** and (c) **tri-consistency loss**. 
 
 !!! a video explaining these three losses
 
@@ -122,7 +121,7 @@ where $w(t)$ is a reweighting function.
 
 
 ## ODE Distillation methods
-Before introducing ODE distillation methods, it is imperative to define a general flow map $$f_{t\to s}(\mathbf{x}_t, t, s)$$<d-cite key="boffi2025build"></d-cite> where it maps any noisy input $$\mathbf{x}_t, t\in[0,1]$$ to any point $$\mathbf{x}_s, s\in[0,1]$$ on the ODE that describes the probability flow aformationed. This is a generalization of flow-based distillation and consistency models within a single unified framework. The flow map is well-defined only if its **boundary conditions** satisfy $$f_{t\to t}(\mathbf{x}_t, t, t) = \mathbf{x}_t$$ for all time steps. One popular way to meet the condition is to parameterize the model as $$ f_{t\to s}(\mathbf{x}_t, t, s)= c_{\text{skip}}(t, s)\mathbf{x}_t + c_{\text{out}}(t,s)F_{t\to s}(\mathbf{x}_t, t, s) $$ where $$c_{\text{skip}}(t, t) = 1$$ and $$c_{\text{out}}(t, t) = 0$$ for all $$t$$.
+Before introducing ODE distillation methods, it is imperative to define a general continuous-time flow map $$f_{t\to s}(\mathbf{x}_t, t, s)$$<d-cite key="boffi2025build"></d-cite> where it maps any noisy input $$\mathbf{x}_t, t\in[0,1]$$ to any point $$\mathbf{x}_s, s\in[0,1]$$ on the ODE that describes the probability flow aformationed. This is a generalization of flow-based distillation and consistency models within a single unified framework. The flow map is well-defined only if its **boundary conditions** satisfy $$f_{t\to t}(\mathbf{x}_t, t, t) = \mathbf{x}_t$$ for all time steps. One popular way to meet the condition is to parameterize the model as $$ f_{t\to s}(\mathbf{x}_t, t, s)= c_{\text{skip}}(t, s)\mathbf{x}_t + c_{\text{out}}(t,s)F_{t\to s}(\mathbf{x}_t, t, s) $$ where $$c_{\text{skip}}(t, t) = 1$$ and $$c_{\text{out}}(t, t) = 0$$ for all $$t$$.
 
 At its core, ODE distillation boils down to how to strategically construct the training objective of the flow map $$f_{t\to s}(\mathbf{x}_t, t, s)$$ so that it can be efficiently evaluated during sampling. In addition, we need orchestrate the schedule of $$(t,s)$$ pairs for better training dynamics.
 
@@ -130,10 +129,10 @@ At its core, ODE distillation boils down to how to strategically construct the t
 MeanFlow<d-cite key="geng2025mean"></d-cite> can be trained from scratch or distilled from a pretrained FM model. The conditional probability path is defined as the linear interpolation between noise and data $$\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\mathbf{x}_1$$ with the corresponding default conditional velocity field OT target $$v(\mathbf{x}_t, t \vert \mathbf{x}_0)=\mathbf{x}_1- \mathbf{x}_0.$$ The main contribution consists of identifying and defining a **average velocity field** which coincides with our flow map as 
 
 $$
-F_{t\to s}(\mathbf{x}_t, t, s)=u(\mathbf{x}_t, t, s) \triangleq \frac{1}{t - s} \int_s^t v(\mathbf{x}_\tau, \tau) d\tau
+F_{t\to s}(\mathbf{x}_t, t, s)=u(\mathbf{x}_t, t, s) \triangleq \frac{1}{t - s} \int_s^t v(\mathbf{x}_\tau, \tau) d\tau=\dfrac{f_{t\to s}(\mathbf{x}_t, t, s)-f_{t\to t}(\mathbf{x}_t, t, t))}{s-t}
 $$
 
-where $$c_{\text{out}}(t,s)=t-s$$. This is great since it attributes actual physical meaning to our flow map.
+where $$c_{\text{out}}(t,s)=s-t$$. This is great since it attributes actual physical meaning to our flow map.
 
 Differentiating both sides w.r.t. $t$ and consider the assumption that $s$ is independent of $t$, we obtain the MeanFlow identity<d-cite key="geng2025mean"></d-cite>
 
@@ -157,7 +156,7 @@ where $$F_{t\to s}^{\text{tgt}}(\mathbf{x}_t, t, s\vert\mathbf{x}_0)=v - (t-s)(v
 <summary>Loss type</summary>
 Type (b) backward loss
 </details>
-In practice, the total derivative of $$F_{t\to s}(\mathbf{x}_t, t, s)$$ and the evaluation can be done in a single function call: `f, dfdt=jvp(f_theta, (xt, s, t), (v, 0, 1))`. Despite `jvp` operation only introduces one extra backward pass, it still incurs expensive and unstable training. SpiltMeanFlow<d-cite key="guo2025splitmeanflow"></d-cite> circumvents this issue by enforcing another consistency identity $$(t-s)F_{t\to s} = (t-r)F_{t\to r}+(r-s)F_{r\to s}$$ where $$s<r<t$$. This implies a discretized version of the MeanFlow objective which falls into loss type (3).
+In practice, the total derivative of $$F_{t\to s}(\mathbf{x}_t, t, s)$$ and the evaluation can be done in a single function call: `f, dfdt=jvp(f_theta, (xt, s, t), (v, 0, 1))`. Despite `jvp` operation only introduces one extra backward pass, it still incurs instability and slos down training. Moreover, the `jvp` operation is currently incompatible with the latest attention architecture. SpiltMeanFlow<d-cite key="guo2025splitmeanflow"></d-cite> circumvents this issue by enforcing another consistency identity $$(t-s)F_{t\to s} = (t-r)F_{t\to r}+(r-s)F_{r\to s}$$ where $$s<r<t$$. This implies a discretized version of the MeanFlow objective which falls into loss type (c).
 
 
 <span style="color: orange; font-weight: bold;">Sampling</span>:
@@ -184,7 +183,7 @@ $$
 \mathbb{E}_{\mathbf{x}_t, t} \left[ w(t) d\left(f_{t \to 0}^\theta(\mathbf{x}_t, t,0), f_{t \to 0}^{\theta^-}(\mathbf{x}_{t-\Delta t}, t - \Delta t,0)\right) \right],
 $$
 
-where $$\theta^-$$ denotes $$\text{stopgrad}(\theta)$$, $$w(t)$$ is a weighting function, $$\Delta t > 0$$ is the distance between adjacent time steps, and $d(\cdot, \cdot)$ is a distance metric.<d-footnote>Common choices include $\ell_2$ loss $d(\mathbf{x}, \mathbf{y}) = ||\mathbf{x} - \mathbf{y}||_2^2$, pseudo-Huber loss $d(\mathbf{x}, \mathbf{y}) = \sqrt{||\mathbf{x} - \mathbf{y}||_2^2 + c^2} - c$ and LPIPS loss. </d-footnote>
+where $$\theta^-$$ denotes $$\text{stopgrad}(\theta)$$, $$w(t)$$ is a weighting function, $$\Delta t > 0$$ is the distance between adjacent time steps, and $d(\cdot, \cdot)$ is a distance metric.<d-footnote>Common choices include $\ell_2$ loss $d(\mathbf{x}, \mathbf{y}) = ||\mathbf{x} - \mathbf{y}||_2^2$, pseudo-Huber loss $d(\mathbf{x}, \mathbf{y}) = \sqrt{||\mathbf{x} - \mathbf{y}||_2^2 + c^2} - c$ and Learned Perceptual Image Patch Similarity (LPIPS) loss. </d-footnote>
 
 - <span style="color: orange; font-weight: bold;">Sampling</span>: 
 It is natural to conduct one-step sampling with CM
@@ -202,7 +201,7 @@ When using $$d(\mathbf{x}, \mathbf{y}) = ||\mathbf{x} - \mathbf{y}||_2^2$$ and t
 
 $$
 \require{physics}
-\nabla_\theta \mathbb{E}_{\mathbf{x}_t, t} \left[ w(t) (f^\theta)^{\top}_{t\to 0}(\mathbf{x}_t, t,0) \dv{f^{\theta^-}_{t\to 0}(\mathbf{x}_t, t,0)}{t} \right] 
+\nabla_\theta \mathbb{E}_{\mathbf{x}_t, t} \left[ w(t) (f^\theta_{t\to 0})^{\top}(\mathbf{x}_t, t,0) \dv{f^{\theta^-}_{t\to 0}(\mathbf{x}_t, t,0)}{t} \right] 
 $$ 
 
 where $$ \require{physics} \dv{f^{\theta^-}_{t\to 0}(\mathbf{x}_t, t,0)}{t} = \nabla_{\mathbf{x}_t} f^{\theta^-}_{t\to 0}(\mathbf{x}_t, t,0) \dv{\mathbf{x}_t}{t} + \partial_t f^{\theta^-}_{t\to 0}(\mathbf{x}_t, t,0)$$ is the tangent of $f^{\theta^-}_{t\to 0}$ at $(\mathbf{x}_t, t)$ along the trajectory of the ODE defined (1). Consistency Trajectory Models<d-cite key="kim2023consistency"></d-cite> extend this objective so that the forward loss (type (a)) becomes globally optimized. In this context, their intuition is that $$f^\theta_{t \to s}(\mathbf{x}_t, t, s)\approx f^\theta_{r \to s}(\texttt{Solver}_{t\to r}(\mathbf{x}_t, t, r), r, s).$$ The composition order on the right-hand side depends on the assumption of the solver of the teacher model.
@@ -232,10 +231,10 @@ $$\require{physics}
 F^\theta_{t\to 0}(\mathbf{x}_t, t, 0)=v(\mathbf{x}_t, t)-t\dv{F^\theta_{t\to 0}(\mathbf{x}_t, t, 0)}{t}.
 $$
 
-Notice this is equivalent to [MeanFlow](#meanflow) where $$s=0$$. This indicates CM objective directly forces the network $F^\theta_{t\to 0}(\mathbf{x}_t, t, 0)$ to learn the properties of an average velocity field heading towards the data distribution, thus enabling the 1-step generation shortcut.
+Notice this is equivalent to [MeanFlow](#meanflow) where $$s=0$$. This indicates CM objective directly forces the network $$F^\theta_{t\to 0}(\mathbf{x}_t, t, 0)$$ to learn the properties of an average velocity field heading towards the data distribution, thus enabling the 1-step generation shortcut.
 
 
-<span style="color: blue; font-weight: bold;">Training</span>: FACM training alogrithm equipped with our flow map notation. Notice that $$d_1, d_2$$ are $\ell_2$ with cosine loss and norm $\ell_2$ loss respectively, plus reweighting. Interestingly, they separate the training of FM and CM on disentangled time intervals. When training with CM target, we let $$s=0, t\in[0,1]$$. On the other hand, when training with FM target, we set $$t'=2-t, t'\in[1,2]$$.
+<span style="color: blue; font-weight: bold;">Training</span>: FACM training alogrithm equipped with our flow map notation. Notice that $$d_1, d_2$$ are $\ell_2$ with cosine loss and norm $\ell_2$ loss respectively, plus reweighting. Interestingly, they separate the training of FM and CM on disentangled time intervals. When training with CM target, we let $$s=0, t\in[0,1]$$. On the other hand, we set $$t'=2-t, t'\in[1,2]$$ when training with FM anchors.
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="blog/2025/diff-distill/facm_training.png" class="img-fluid rounded z-depth-1" %}
@@ -248,61 +247,109 @@ Notice this is equivalent to [MeanFlow](#meanflow) where $$s=0$$. This indicates
 Type (b) backward loss
 </details>
 
-
-!!! starting from here
 ### Align Your Flow
 
-Our notation is a small modification of this paper, where we indicate the direction of the distillation.
-<span style="color: blue; font-weight: bold;">Training</span>
+Our notation incorporates a small modification of the flow map introduced by Align Your Flow<d-cite key="sabour2025align"></d-cite>, where we indicate the direction of the distillation. Hence, we say that Align Your Flow (AYF) the continuous-time flow map $$f^{\text{AYF}}(\mathbf{x}_t, t, s)=f_{t\to s}(\mathbf{x}_t, t, s).$$ Specifically, AYF selects a tigher set of boundary conditions $$c_{\text{skip}}(t,s)=1$$ and $$c_{\text{out}}(t,s)=s-t$$.
 
-1. AYF-Eulerian Map Distillation
-Let $f_\theta(\mathbf{x}_t, t, s)$ be the flow map. Consider the loss function defined between two adjacent starting timesteps $t$ and $t' = t + \epsilon(s - t)$ for a small $\epsilon > 0$,
-
-$$\mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\|f_\theta(\mathbf{x}_t, t, s) - f_{\theta^-}(\mathbf{x}_{t'}, t', s)\|_2^2\right],$$ 
- where $\mathbf{x}_{t'}$ is obtained by applying a 1-step Euler solver to the PF-ODE from $t$ to $t'$. In the limit as $\epsilon \to 0$, the gradient of this objective with respect to $\theta$ converges to:
- $$ \nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w'(t, s)\text{sign}(t - s) \cdot \mathbf{f}_\theta^\top(\mathbf{x}_t, t, s) \cdot \frac{\text{d}f_{\theta^-}(\mathbf{x}_t, t, s)}{\text{d}t}\right],$$
-where $w'(t, s) = w(t, s) \times |t - s|$.
-
-
-2.  AYF-Lagrangian Map Distillation
-Let $f_\theta(\mathbf{x}_t, t, s)$ be the flow map. Consider the loss function defined between two adjacent ending timesteps $s$ and $s' = s + \epsilon(t - s)$ for a small $\epsilon > 0$,}$$\mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\|f_\theta(\mathbf{x}_t, t, s) - ODE_{s' \to s}[f_{\theta^-}(\mathbf{x}_t, t, s')]\|_2^2\right],$$ where $ODE_{t \to s}(\mathbf{x})$ refers to running a 1-step Euler solver on the PF-ODE starting from $\mathbf{x}$ at timestep $t$ to timestep $s$. In the limit as $\epsilon \to 0$, the gradient of this objective with respect to $\theta$ converges to: $$\nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w'(t, s)\text{sign}(s - t) \cdot \mathbf{f}_\theta^\top(\mathbf{x}_t, t, s) \cdot \left(\frac{\text{d}f_{\theta^-}(\mathbf{x}_t, t, s)}{\text{d}s} - \mathbf{v}_\phi(f_{\theta^-}(\mathbf{x}_t, t, s), s)\right)\right],$$where $w'(t, s) = w(t, s) \times |t - s|$.
-
-
-**Remarks:**
-1. In AYF-EMD: the standard flow matching loss appears if $s\to t$
-2. In AYF-EMD: this reduces to continuous CM when $s=0$
-3. The gradient of MeanFlow objective matches the AYF-EMD objective using an Euler parametrization up to a constant
-
-$$\mathcal{L}_{\text{MeanFlow}}(\theta) = \mathbb{E}_{\mathbf{x}_t, t, s}\left[\left\|\mathbf{F}_\theta(\mathbf{x}_t, t, s) - \left(\frac{\text{d}\mathbf{x}_t}{\text{d}t} - (t - s)\frac{\text{d}\mathbf{F}_{\theta^-}(\mathbf{x}_t, t, s)}{\text{d}t}\right)\right\|_2^2\right].$$
-4. AYF-EMD objective and EMD loss in Flow Maps (no SG, and let $\epsilon\to 0$)
-$$
-\nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\left\|\partial_t f_\theta(\mathbf{x}_t, t, s) + \nabla_{\mathbf{x}} f_\theta(\mathbf{x}_t, t, s) \cdot \frac{\text{d}\mathbf{x}_t}{\text{d}t}\right\|_2^2\right] = \nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\left\|\frac{\text{d}f_\theta(\mathbf{x}_t, t, s)}{\text{d}t}\right\|_2^2\right].
-$$
-5. AYF-LMD objective and the LMD loss (let $\epsilon\to 0$)
+<span style="color: blue; font-weight: bold;">Training</span>:
+The first variant of the objective, called AYF-**Eulerian Map Distillation**, is compatible with both distillation and training from scratch. 
 
 $$
-\nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\left\|\partial_s f_\theta(\mathbf{x}_t, t, s) - \mathbf{v}_\phi(f_\theta(\mathbf{x}_t, t, s), s)\right\|_2^2\right]
+\nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\text{sign}(t - s) \cdot (f^\theta_{t \to s})^\top(\mathbf{x}_t, t, s) \cdot \frac{\text{d}f^{\theta^-}_{t\to s}(\mathbf{x}_t, t, s)}{\text{d}t}\right]
 $$
+
+It is intriguing that this objective reduces to the [continuous CM](#consistency-models) objective when $$s=0$$, while transforming to original FM objective when $$s\to t$$. In addition, CTMs<d-cite key="kim2023consistency"></d-cite> uses a discrete consistency loss with a fixed discretized time schedule comparing to AYF-EMD objective.
+Regarding the second variant, named AYF-**Lagrangian Map Distillation**, it is only applicable to distillation from a pretrained flow model $$F^\delta_{t \to t}(\mathbf{x}_t,t,t)$$. 
+
+$$
+\nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\text{sign}(s - t) \cdot (f^\theta_{t \to s})^\top \cdot \left(\frac{\text{d}f^{\theta^-}_{t\to s}}{\text{d}s} - F^\delta_{s \to s}((f_{\theta^-}(\mathbf{x}_t, t, s), s,s)\right)\right].
+$$
+
+<span style="color: orange; font-weight: bold;">Sampling</span>: Same as CM. A combination of $$\gamma$$-sampling and classifier-free guidance.
+
+The formulation of these objectives is majorly built on the Flow Map Matching<d-cite key="boffi2025build"></d-cite>. Similar to the trick in training [Meanflow](#meanflow) and [CMs](#consistency-models), they add a `stopgrad` operator to the loss to make the objective practical. In their appendix, they provide a detailed proof of why these objectives are equivalent to the objectives in Flow Map Matching<d-cite key="boffi2025build"></d-cite>. 
+
+<details>
+<summary>Loss type</summary>
+Type (b) backward loss for AYF-EMD, type (a) forward loss for AYF-LMD.
+</details>
 
 ## Connections
+Now it is time to connect the dots with some previous existing methods. Let's frame their objectives in our flow map notation and identify their loss types.
 
 ### Shortcut Models
-They propose an objective combining flow matching and a self-consistency loss
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="blog/2025/diff-distill/shortcut_model.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+The diagram of Shortcut Models<d-cite key="frans2024one"></d-cite>
+</div>
+In essence, Shortcut models<d-cite key="frans2024one"></d-cite> augment the standard flow matching objective with a self-consistency regularization term. This additional loss component ensures that the learned vector field satisfies a midpoint consistency property: the result of a single large integration step should match the composition of two smaller steps traversing the same portion of the ODE trajectory. 
+
+<span style="color: blue; font-weight: bold;">Training</span>: In the training objective, we neglect the input arguments and focus on the core transition between time steps. Again, we elaborate it with our flow map notation.
+
 $$
-\mathcal{L}(\theta) = \mathbb{E}_{\mathbf{x}_t, t, s}\left[\left\|\mathbf{F}_\theta(\mathbf{x}_t, t, t) - \frac{\text{d}\mathbf{x}_t}{\text{d}t}\right\|_2^2 + \left\|\mathbf{f}_\theta(\mathbf{x}_t, t, s) - \mathbf{f}_{\theta^-}\left(\mathbf{f}_{\theta^-}\left(\mathbf{x}_t, t, \frac{t + s}{2}\right), \frac{t + s}{2}, s\right)\right\|_2^2\right]
+\mathbb{E}_{\mathbf{x}_t, t, s}\left[\left\|F^\theta_{t\to t} - \dfrac{\text{d}\mathbf{x}_t}{\text{d}t}\right\|_2^2 + \left\|f^\theta_{t\to s} - f^{\theta^-}_{\frac{t+s}{2}\to s}\circ f^{\theta^-}_{t \to \frac{t+s}{2}}\right\|_2^2\right]
 $$
+
+where we adopt the same flow map conditions based on [AYF](#align-your-flow).
+
+
+<span style="color: orange; font-weight: bold;">Sampling</span>: Same with MeanFlow yet with specific shortcut lengths.
+<details>
+<summary>Loss type</summary>
+Type (c) tri-consistency loss
+</details>
+
+### ReFlow
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="blog/2025/diff-distill/rectifiedflow.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+The diagram of rectified flow and ReFlow process<d-cite key="liu2022flow"></d-cite>
+</div>
+Unlike most ODE distillation methods that learn to jump from $$t\to s$$ according to our defined flow map $$f_{t\to s}(\mathbf{x}_t, t, s)$$, ReFlow<d-cite key="liu2022flow"></d-cite> takes a different approach by establishing new noise-data couplings so that the new model will generate straighter trajectories.<d-footnote>In the rectified flow paper<d-cite key="liu2022flow"></d-cite>, the straightness of any continuously differentiable process $$Z=\{Z_t\}$$ can be measured by $$S(Z)=\int_0^1\mathbb{E}\|(Z_1-Z_0)-\dot{Z}_t\|^2 dt$$ where $S(Z)=0$ implies the trajectories are perfectly straight.</d-footnote> In this case, this allows the ODE to be solved with fewer steps and larger step sizes. To some extent, this resembles the preconditioning from OT-CFM<d-cite key="tong2023improving"></d-cite> where they intentionally sample noise and data pairs jointly from an optimal transport map $$\pi(\mathbf{x}_0, \mathbf{x}_1)$$ instead of independent marginals.
+
+<span style="color: blue; font-weight: bold;">Training</span>: Pair synthesized data from the pretrained model with the noise. Use this new coupling to train a student model with the standard FM objective.
+
+<span style="color: orange; font-weight: bold;">Sampling</span>: Same as FMs.
 
 ### Inductive Moment Matching 
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include figure.liquid loading="eager" path="blog/2025/diff-distill/IMM.png" class="img-fluid rounded z-depth-1" %}
+    </div>
+</div>
+<div class="caption">
+The diagram of IMM<d-cite key="zhou2025inductive"></d-cite>
+</div>
+This recent method<d-cite key="zhou2025inductive"></d-cite> trains our flow map from scratch via matching the distributions of $$f^{\theta}_{t\to s}(\mathbf{x}_t, t, s)$$ and $$f^{\theta}_{r\to s}(\mathbf{x}_r, r, s)$$ where $$s<r<t$$. They adopt an Maximum Mean Discrepancy (MMD) loss to match the distributions.
 
-According to the notation defined in **AYF - Flow maps**, it uses an MMD loss to match distributions of $\mathbf{f}_\theta(\mathbf{x}_t, t, s)$ and $\mathbf{f}_{\theta^-}(\mathbf{x}_r,r,s)$ where $s< r< t$ .
+<span style="color: blue; font-weight: bold;">Training</span>: In our flow map notation, the training objective becomes
 
+$$
+\mathbb{E}_{\mathbf{x}_t, t, s} \left[ w(t,s) \text{MMD}^2\left(f_{t \to s}(\mathbf{x}_t, t,s), f_{r \to s}(\mathbf{x}_{r}, r,s)\right) \right]
+$$
 
-### Distribution Matching Distillation
+where $$w(t,s)$$ is a weighting function.
+
+<span style="color: orange; font-weight: bold;">Sampling</span>: Same spirit as [AYF](#align-your-flow).
 
 
 ## Closing Thoughts
-We have done flow matching ODE distillation on human motion trajectory<d-cite key="fu2025moflowonestep"></d-cite>. Compared to more common approaches such as adversarial distillation derived from GANs or Maximum Mean Discrepancy as used in [IMM](#inductive-moment-matching), IMLE is a relatively niche method that aligns two distributions directly from their samples.
+
+The concept of a flow map offers a capable and unifying notation for summarizing the diverse landscape of diffusion distillation methods. Beyond these ODE distillation methods, an intriguing family of approaches pursues a more direct goal: training a one-step generator from the ground up by directly matching the data distribution from the teacher model.
+
+The core question is: how can we best leverage a pre-trained teacher model to train a student that approximates the data distribution $$p_{\text{data}}$$ in a single shot? With access to the teacher's flow, several compelling strategies emerge. It becomes possible to directly match the velocity fields, minimize the KL divergence between the student and teacher output distributions<d-cite key="yin2024improved"></d-cite>, or align their respective score functions<d-cite key="wang2025uni"></d-cite>.
+
+This leads to distinct techniques in practice. For example, adversarial distillation<d-cite key="yin2024improved, sabour2025align"></d-cite> employs a min-max objective to align the two distributions, while other methods like [IMM](#inductive-moment-matching) rely on statistical divergences like the Maximum Mean Discrepancy (MMD).
+
+In our own work on human motion prediction<d-cite key="fu2025moflowonestep"></d-cite>, we explored this direction by using Implicit Maximum Likelihood Estimation (IMLE). IMLE is a potent, if less common, technique that aligns distributions based purely on their samples, offering a direct and elegant way to distill the teacher's knowledge without requiring an explicit density function or a discriminator.
+
+Diffusion distillation is a dynamic field brimming with potential. The journey from a hundred steps to a single step is not just a technical challenge but a gateway to real-time, efficient generative AI applications.
 
 
-
-Table incorporates the pros and cons in all dimensions for every methods
