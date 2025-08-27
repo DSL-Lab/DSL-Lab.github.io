@@ -115,9 +115,10 @@ $$
 \arg\min_\theta\mathbb{E}_{\mathbf{x}_0, \mathbf{x}_1, t} 
 \left[ w(t) \left\| v_\theta(\mathbf{x}_t, t) - v(\mathbf{x}_t, t | \mathbf{x}_0) \right\|_2^2 \right]
 $$
+
 where $w(t)$ is a reweighting function.
 
-<span style="color: orange; font-weight: bold;">Sampling</span>: Solve $$\require{physics} \dv{\mathbf{x}_t}{t}=v_\theta(\mathbf{x}_t, t)$$ from the initial condition $$\mathbf{x}_1\sim p_{\text{noise}}.$$ Typically, an Euler solver or another high-order ODE solver is employed, taking a few hundred discrete steps through iterative refinements.
+<span style="color: orange; font-weight: bold;">Sampling</span>: Solve the ODE $$\require{physics} \dv{\mathbf{x}_t}{t}=v_\theta(\mathbf{x}_t, t)$$ from the initial condition $$\mathbf{x}_1\sim p_{\text{noise}}.$$ Typically, an Euler solver or another high-order ODE solver is employed, taking a few hundred discrete steps through iterative refinements.
 
 
 ## ODE Distillation methods
@@ -132,9 +133,9 @@ $$
 F_{t\to s}(\mathbf{x}_t, t, s)=u(\mathbf{x}_t, t, s) \triangleq \frac{1}{t - s} \int_s^t v(\mathbf{x}_\tau, \tau) d\tau=\dfrac{f_{t\to s}(\mathbf{x}_t, t, s)-f_{t\to t}(\mathbf{x}_t, t, t))}{s-t}
 $$
 
-where $$c_{\text{out}}(t,s)=s-t$$. This is great since it attributes actual physical meaning to our flow map.
+where $$c_{\text{out}}(t,s)=s-t$$. This is great since it attributes actual physical meaning to our flow map. In particular, $$f_{t\to s}(\mathbf{x}_t, t, s)$$ represents the "displacement" from $$\mathbf{x}_t$$ to $$\mathbf{x}_s$$, while $$F_{t\to s}(\mathbf{x}_t, t, s)$$ is the average velocity field pointing from $$\mathbf{x}_t$$ to $$\mathbf{x}_s$$.
 
-Differentiating both sides w.r.t. $t$ and consider the assumption that $s$ is independent of $t$, we obtain the MeanFlow identity<d-cite key="geng2025mean"></d-cite>
+Differentiating both sides w.r.t. $t$ and considering the assumption that $s$ is independent of $t$, we obtain the MeanFlow identity<d-cite key="geng2025mean"></d-cite>
 
 $$
 \require{physics}
@@ -163,7 +164,7 @@ In practice, the total derivative of $$F_{t\to s}(\mathbf{x}_t, t, s)$$ and the 
 Either one-step or multi-step sampling can be performed. It is intuitive to obtain the following expression by the definition of average velocity field
 
 $$
-\mathbf{x}_s = \mathbf{x}_t - (t-s)f^\theta_{t\to s}(\mathbf{x}_t, t, s).
+\mathbf{x}_s = \mathbf{x}_t - (t-s)F^\theta_{t\to s}(\mathbf{x}_t, t, s).
 $$
 
 In particular, we achieve one-step inference by setting $t=1, s=0$ and sampling from $$\mathbf{x}_1\sim p_{\text{noise}}$$.
@@ -196,7 +197,7 @@ while multi-step sampling is also possible since we can compute the next noisy o
 
 **Continuous CM**
 
-When using $$d(\mathbf{x}, \mathbf{y}) = ||\mathbf{x} - \mathbf{y}||_2^2$$ and taking the limit $\Delta t \to 0$, Song et al.<d-cite key="song2020score"></d-cite> show that the gradient with respect to $\theta$ converges to a new objective with no $$\Delta t$$ involved.
+When using $$d(\mathbf{x}, \mathbf{y}) = ||\mathbf{x} - \mathbf{y}||_2^2$$ and taking the limit $\Delta t \to 0$, Song et al.<d-cite key="song2020score"></d-cite> show that the gradient of the discretized CM's loss with respect to $\theta$ converges to a new objective with no $$\Delta t$$ involved.
 - <span style="color: blue; font-weight: bold;">Training</span>: In our notation, the objective is
 
 $$
