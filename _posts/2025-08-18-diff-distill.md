@@ -58,13 +58,18 @@ toc:
 
 ## Introduction
 
-Diffusion and flow-based models<d-cite key="ho2020denoising, lipman_flow_2023, albergo2023stochastic, liu2022flow"></d-cite> have taken over generative AI space, enabling unprecedented capabilities in videos, audios, and text generation. Nonetheless, there is a caveat - they are painfully **slow** during inference. Generating a single high-quality sample will require running through hundreds of denoising steps, which translate to high costs and long wait times. 
+Diffusion and flow-based models<d-cite key="ho2020denoising, lipman_flow_2023, albergo2023stochastic, liu2022flow"></d-cite> have taken over generative AI space, enabling unprecedented capabilities in videos, audios, and text generation. Nonetheless, there is a caveat --- they are painfully **slow** during inference. Generating a single high-quality sample will require running through hundreds of denoising steps, which translate to high costs and long wait times. 
 
 At its core, diffusion models (equivalently, flow matching models) operate by iteratively refining noisy data into high-quality outputs through a series of denoising steps. Similar to divide-and-conquer algorithms <d-footnote>Common ones like Mergesort, locating the median and Fast Fourior Transform.</d-footnote>, diffusion models first *divide* the difficult denoising task into subtasks and *conquer* one of these at a time during training. To obtain a sample, we make a sequence of recursive predictions which means we need to *conquer* the entire task end-to-end. 
 
 This challenge has spurred research into acceleration strategies across multiple grandular levels, including hardware optimization, mixed precision training<d-cite key="micikevicius2017mixed"></d-cite>, [quantization](https://github.com/bitsandbytes-foundation/bitsandbytes), and parameter-efficient fine-tuning<d-cite key="hu2021lora"></d-cite>. In this blog, we focus on an orthogonal approach, **ODE distillation**, which minimize Number of Function Evaluations (NFEs) so that we can generate high-quality samples with as few denoising steps as possible.
 
 Distillation, in general, is a technique that transfers knowledge from a complex, high-performance model (the *teacher*) to a more efficient, customized model (the *student*). Recent distillation methods have achieved remarkable reductions in sampling steps, from hundreds to just a few and even **one** step, while preserving the sample quality. This advancement paves the way for real-time applications and deployment in resource-constrained environments.
+<div class="row mt-3">
+    <div class="col-sm mt-3 mt-md-0">
+        {% include video.liquid path="blog/2025/diff-distill/diff-distill.mp4" class="img-fluid rounded z-depth-1" controls=true autoplay=true %}
+    </div>
+</div>
 
 
 ## Notation at a Glance
