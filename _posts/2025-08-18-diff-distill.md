@@ -265,7 +265,7 @@ $$
 Notice this is equivalent to [MeanFlow](#meanflow) where $$s=0$$. This indicates CM objective directly forces the network $$F^\theta_{t\to 0}(\mathbf{x}_t, t, 0)$$ to learn the properties of an average velocity field heading towards the data distribution, thus enabling the 1-step generation shortcut.
 
 
-<span style="color: blue; font-weight: bold;">Training</span>: FACM training algorithm equipped with our flow map notation. Notice that $$d_1, d_2$$ are $\ell_2$ with cosine loss and norm $\ell_2$ loss respectively, plus reweighting. Interestingly, they separate the training of FM and CM on disentangled time intervals. When training with CM target, we let $$s=0, t\in[0,1]$$. On the other hand, we set $$t'=2-t, t'\in[1,2]$$ when training with FM anchors.
+<span style="color: blue; font-weight: bold;">Training</span>: FACM training algorithm equipped with our flow map notation. Notice that $$d_1, d_2$$ are $\ell_2$ with cosine loss<d-footnote>$L_{\cos}(\mathbf{x}, \mathbf{y}) = 1 - \dfrac{\mathbf{x} \cdot \mathbf{y}}{\|\mathbf{x}\|_{2} \, \|\mathbf{y}\|_{2}}$</d-footnote> and norm $\ell_2$ loss<d-footnote>$L_{\text{norm}}(\mathbf{x}, \mathbf{y}) =\dfrac{\|\mathbf{x}-\mathbf{y}\|^2}{\sqrt{\|\mathbf{x}-\mathbf{y}\|^2+c}}$ where $c$ is a small constant. This is a special case of adaptive L2 loss proposed in MeanFlow<d-cite key="geng2025mean"></d-cite>.</d-footnote> respectively, plus reweighting. Interestingly, they separate the training of FM and CM on disentangled time intervals. When training with CM target, we let $$s=0, t\in[0,1]$$. On the other hand, we set $$t'=2-t, t'\in[1,2]$$ when training with FM anchors.
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="blog/2025/diff-distill/facm_training.png" class="img-fluid rounded z-depth-1" %}
@@ -289,7 +289,7 @@ $$
 \nabla_\theta \mathbb{E}_{\mathbf{x}_t, t, s}\left[w(t, s)\text{sign}(t - s) \cdot (f^\theta_{t \to s})^\top(\mathbf{x}_t, t, s) \cdot \frac{\text{d}f^{\theta^-}_{t\to s}(\mathbf{x}_t, t, s)}{\text{d}t}\right]
 $$
 
-It is intriguing that this objective reduces to the [continuous CM](#consistency-models) objective when $$s=0$$, while transforming to original FM objective when $$s\to t$$. In addition, CTMs<d-cite key="kim2023consistency"></d-cite> uses a discrete consistency loss with a fixed discretized time schedule comparing to AYF-EMD objective.
+It is intriguing that this objective reduces to the [continuous CM](#consistency-models) objective when $$s=0$$, while transforming to original FM objective when $$s\to t$$<d-footnote>The gradient of AYF-EMD matches the gradient of FM objective up to some constant when taking the limit $s\to t$.</d-footnote>. In addition, CTMs<d-cite key="kim2023consistency"></d-cite> uses a discrete consistency loss with a fixed discretized time schedule comparing to AYF-EMD objective.
 Regarding the second variant, named AYF-**Lagrangian Map Distillation**, it is only applicable to distillation from a pretrained flow model $$F^\delta_{t \to t}(\mathbf{x}_t,t,t)$$. 
 
 $$
