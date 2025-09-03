@@ -121,7 +121,7 @@ $$
 \left[ w(t) \left\| v_\theta(\mathbf{x}_t, t) - v(\mathbf{x}_t, t | \mathbf{x}_0) \right\|_2^2 \right]
 $$
 
-where $$w(t)$$ is a reweighting function<d-footnote>The weighting function modulates the contribution of the loss at each time step. This is necessary because the nature of the task differs fundamentally between high and low noise levels, requiring a balanced treatment of the loss across these regimes. Some common ones are included in this [blog](https://diffusionflow.github.io/).</d-footnote>.
+where $$w(t)$$ is a reweighting function<d-footnote>The weighting function modulates the contribution of the loss at each time step. This is necessary because the nature of the task differs fundamentally between high and low noise levels, requiring a balanced treatment of the loss across these regimes. Some common ones are included in this blog https://diffusionflow.github.io/.</d-footnote>.
 
 <span style="color: orange; font-weight: bold;">Sampling</span>: Solve the ODE $$\require{physics} \dv{\mathbf{x}_t}{t}=v_\theta(\mathbf{x}_t, t)$$ from the initial condition $$\mathbf{x}_1\sim p_{\text{noise}}.$$ Typically, an Euler solver or another high-order ODE solver is employed, taking a few hundred discrete steps through iterative refinements.
 
@@ -375,9 +375,9 @@ where $$w(t,s)$$ is a weighting function.
 
 The concept of a flow map offers a capable and unifying notation for summarizing the diverse landscape of diffusion distillation methods. Beyond these ODE distillation methods, an intriguing family of approaches pursues a more direct goal: training a one-step generator from the ground up by directly matching the data distribution from the teacher model.
 
-The core question is: how can we best leverage a pre-trained teacher model to train a student that approximates the data distribution $$p_{\text{data}}$$ in a single shot? With access to the teacher's flow, several compelling strategies emerge. It becomes possible to directly match the velocity fields, minimize the KL divergence between the student and teacher output distributions<d-cite key="yin2024improved"></d-cite>, or align their respective score functions<d-cite key="wang2025uni"></d-cite>.
+The core question is: how can we best leverage a pre-trained teacher model to train a student that approximates the data distribution $$p_{\text{data}}$$ in a single shot? With access to the teacher's flow, several compelling strategies emerge. It becomes possible to directly match the velocity fields, minimize the $$f$$-divergence between the student and teacher output distributions<d-cite key="yin2024improved, xu2025one"></d-cite>, or align their respective score functions<d-cite key="wang2025uni, zhou2024score"></d-cite>.
 
-This leads to distinct techniques in practice. For example, adversarial distillation<d-cite key="yin2024improved, sabour2025align"></d-cite> employs a min-max objective to align the two distributions, while other methods like [IMM](#inductive-moment-matching) rely on statistical divergences like the Maximum Mean Discrepancy (MMD).
+This leads to distinct techniques in practice. For example, adversarial distillation<d-cite key="yin2024improved, sabour2025align"></d-cite> employs a min-max objective to align the two distributions, while other methods like [IMM](#inductive-moment-matching) rely on statistical divergences like the Maximum Mean Discrepancy (MMD).  
 
 In our own work on human motion prediction<d-cite key="fu2025moflowonestep"></d-cite>, we explored this direction by using Implicit Maximum Likelihood Estimation (IMLE). IMLE is a potent, if less common, technique that aligns distributions based purely on their samples, offering a direct and elegant way to distill the teacher's knowledge without requiring an explicit density function or a discriminator.
 
