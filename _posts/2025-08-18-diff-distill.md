@@ -45,13 +45,17 @@ Distillation, in general, is a technique that transfers knowledge from a complex
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include video.liquid path="/blog/2025/diff-distill/diff-distill.mp4" class="img-fluid rounded z-depth-1" controls=true autoplay=true loop=true %}
+        <div class="caption">
+        A video illustrating the basic flow matching concepts and three categories of ODE distillation objectives.
+        </div>
     </div>
 </div>
 
 
+
 ## Notation at a Glance
 
-The modern approaches of generative modelling consist of picking some samples from a base distribution $$ \mathbf{x}_{1} \sim p_ {\text{noise}} $$, typically an isotropic Gaussian, and learning a map such that $$ \mathbf{x}_{0} \sim p_ {\text{data}} $$. The connection between these two distributions can be expressed by establishing an initial value problem controlled by the **velocity field** $$v(\mathbf{x}_{t}, t)$$,
+The modern approaches of generative modelling consist of picking some samples from a base distribution $$ \mathbf{x}_{1} \sim p_{\text{noise}} $$, typically an isotropic Gaussian, and learning a map such that $$ \mathbf{x}_{0} \sim p_{\text{data}} $$. The connection between these two distributions can be expressed by establishing an initial value problem controlled by the **velocity field** $$v(\mathbf{x}_{t}, t)$$,
 
 $$
 \require{physics}
@@ -66,11 +70,12 @@ where the **flow** $$\psi_t:\mathbb{R}^d\times[0,1]\to \mathbb{R}^d$$ is a diffe
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="/blog/2025/diff-distill/teaser_probpath_velocity_field.png" class="img-fluid rounded z-depth-1" %}
+        <div class="caption">
+        From left to right:<d-cite key="lipman2024flowmatchingguidecode"></d-cite>conditional and marginal probability paths, conditional and marginal velocity fields. The velocity field induces a flow that dictates its instantaneous movement across all points in space.
+        </div>
     </div>
 </div>
-<div class="caption">
-From left to right:<d-cite key="lipman2024flowmatchingguidecode"></d-cite>conditional and marginal probability paths, conditional and marginal velocity fields. The velocity field induces a flow that dictates its instantaneous movement across all points in space.
-</div>
+
 
 Most of the conditional probability paths are designed as the **differentiable** interpolation between noise and data for simplicity, and we can express sampling from a marginal path 
 $$\mathbf{x}_t = \alpha(t)\mathbf{x}_0 + \beta(t)\mathbf{x}_1$$ where $$\alpha(t), \beta(t)$$ are predefined schedules. <d-footnote>The stochastic interpolant paper defines this probability path that summarizes all diffusion models, with several assumptions. Here, we use a simpler interpolant for clean illustration.</d-footnote>
@@ -298,11 +303,12 @@ Now it is time to connect the dots with some previous existing methods. Let's fr
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="/blog/2025/diff-distill/shortcut_model.png" class="img-fluid rounded z-depth-1" %}
+        <div class="caption">
+        The diagram of Shortcut Models<d-cite key="frans2024one"></d-cite>
+        </div>
     </div>
 </div>
-<div class="caption">
-The diagram of Shortcut Models<d-cite key="frans2024one"></d-cite>
-</div>
+
 In essence, Shortcut Models<d-cite key="frans2024one"></d-cite> augment the standard flow matching objective with a self-consistency regularization term. This additional loss component ensures that the learned vector field satisfies a midpoint consistency property: the result of a single large integration step should match the composition of two smaller steps traversing the same portion of the ODE (\ref{eq:1}) trajectory. 
 
 <span style="color: blue; font-weight: bold;">Training</span>: In the training objective, we neglect the input arguments and focus on the core transition between time steps. Again, we elaborate it with our flow map notation.
@@ -324,11 +330,12 @@ Type (c) tri-consistency loss
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="/blog/2025/diff-distill/rectifiedflow.png" class="img-fluid rounded z-depth-1" %}
+        <div class="caption">
+        The diagram of rectified flow and ReFlow process<d-cite key="liu2022flow"></d-cite>
+        </div>
     </div>
 </div>
-<div class="caption">
-The diagram of rectified flow and ReFlow process<d-cite key="liu2022flow"></d-cite>
-</div>
+
 Unlike most ODE distillation methods that learn to jump from $$t\to s$$ according to our defined flow map $$f_{t\to s}(\mathbf{x}_t, t, s)$$, ReFlow<d-cite key="liu2022flow"></d-cite> takes a different approach by establishing new noise-data couplings so that the new model will generate straighter trajectories.<d-footnote>In the rectified flow paper<d-cite key="liu2022flow"></d-cite>, the straightness of any continuously differentiable process $$Z=\{Z_t\}$$ can be measured by $$S(Z)=\int_0^1\mathbb{E}\|(Z_1-Z_0)-\dot{Z}_t\|^2 dt$$ where $S(Z)=0$ implies the trajectories are perfectly straight.</d-footnote> In this case, this allows the ODE (\ref{eq:1}) to be solved with fewer steps and larger step sizes. To some extent, this resembles the preconditioning from OT-CFM<d-cite key="tong2023improving"></d-cite> where they intentionally sample noise and data pairs jointly from an optimal transport map $$\pi(\mathbf{x}_0, \mathbf{x}_1)$$ instead of independent marginals.
 
 <span style="color: blue; font-weight: bold;">Training</span>: Pair synthesized data from the pretrained model with the noise. Use this new coupling to train a student model with the standard FM objective.
@@ -340,11 +347,12 @@ Unlike most ODE distillation methods that learn to jump from $$t\to s$$ accordin
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
         {% include figure.liquid loading="eager" path="/blog/2025/diff-distill/IMM.png" class="img-fluid rounded z-depth-1" %}
+        <div class="caption">
+        The diagram of IMM<d-cite key="zhou2025inductive"></d-cite>
+        </div>
     </div>
 </div>
-<div class="caption">
-The diagram of IMM<d-cite key="zhou2025inductive"></d-cite>
-</div>
+
 This recent method<d-cite key="zhou2025inductive"></d-cite> trains our flow map from scratch via matching the distributions of $$f^{\theta}_{t\to s}(\mathbf{x}_t, t, s)$$ and $$f^{\theta}_{r\to s}(\mathbf{x}_r, r, s)$$ where $$s<r<t$$. They adopt an Maximum Mean Discrepancy (MMD) loss to match the distributions.
 
 <span style="color: blue; font-weight: bold;">Training</span>: In our flow map notation, the training objective becomes
