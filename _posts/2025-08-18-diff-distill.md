@@ -161,15 +161,22 @@ Based on the MeanFlow identity, we can compute the target as follows:
 
 $$
 \require{physics}
-\require{cancel}
 \begin{align*}
 F_{t\to s}^{\text{tgt}}(\mathbf{x}_t, t, s\vert\mathbf{x}_0) &= \dv{\mathbf{x}_t}{t} - (t-s)\dv{F_{t\to s}(\mathbf{x}_t, t, s)}{t} \\
-& = \dv{\mathbf{x}_t}{t} - (t-s)\left(\nabla_{\mathbf{x}_t} F_{t\to s}(\mathbf{x}_t, t, s) \dv{\mathbf{x}_t}{t} + \partial_t F_{t\to s}(\mathbf{x}_t, t, s) + \cancel{\partial_s F_{t\to s}(\mathbf{x}_t, t, s) \dv{s}{t}}\right) \\
+& = \dv{\mathbf{x}_t}{t} - (t-s)\left(\nabla_{\mathbf{x}_t} F_{t\to s}(\mathbf{x}_t, t, s) \dv{\mathbf{x}_t}{t} + \partial_t F_{t\to s}(\mathbf{x}_t, t, s) + \underbrace{\partial_s F_{t\to s}(\mathbf{x}_t, t, s) \dv{s}{t}}_{=0}\right) \\
 & = v - (t-s)\left(v \nabla_{\mathbf{x}_t} F_{t\to s}(\mathbf{x}_t, t, s) + \partial_t F_{t\to s}(\mathbf{x}_t, t, s)\right). \\
 \end{align*}
 $$
 
-Note that in MeanFlow $$\dv{\mathbf{x}_t}{t} = v(\mathbf{x}_t, t\vert \mathbf{x}_0)$$ and $$\dv{s}{t}=0$$ since $s$ is independent of $t$.
+Note that in MeanFlow 
+
+$$\require{physics}\dv{\mathbf{x}_t}{t} = v(\mathbf{x}_t, t\vert \mathbf{x}_0)$$ 
+
+and 
+
+$$\require{physics}\dv{s}{t}=0$$ 
+
+since $s$ is independent of $t$.
 </details>
 
 In practice, the total derivative of $$F_{t\to s}(\mathbf{x}_t, t, s)$$ and the evaluation can be done in a single function call: `f, dfdt=jvp(f_theta, (xt, s, t), (v, 0, 1))`. Despite `jvp` operation only introduces one extra backward pass, it still incurs instability and slows down training. Moreover, the `jvp` operation is currently incompatible with the latest attention architecture. SplitMeanFlow<d-cite key="guo2025splitmeanflow"></d-cite> circumvents this issue by enforcing another consistency identity $$(t-s)F_{t\to s} = (t-r)F_{t\to r}+(r-s)F_{r\to s}$$ where $$s<r<t$$. This implies a discretized version of the MeanFlow objective which falls into loss type (c).
