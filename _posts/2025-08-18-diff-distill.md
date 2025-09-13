@@ -38,7 +38,7 @@ Diffusion and flow-based models<d-cite key="ho2020denoising, lipman_flow_2023, a
 
 At its core, diffusion models (equivalently, flow matching models) operate by iteratively refining noisy data into high-quality outputs through a series of denoising steps. Similar to divide-and-conquer algorithms <d-footnote>Common ones like Mergesort, locating the median and Fast Fourier Transform.</d-footnote>, diffusion models first *divide* the difficult denoising task into subtasks and *conquer* one of these at a time during training. To obtain a sample, we make a sequence of recursive predictions which means we need to *conquer* the entire task end-to-end. 
 
-This challenge has spurred research into acceleration strategies across multiple granular levels, including hardware optimization, mixed precision training<d-cite key="micikevicius2017mixed"></d-cite>, [quantization](https://github.com/bitsandbytes-foundation/bitsandbytes), and parameter-efficient fine-tuning<d-cite key="hu2021lora"></d-cite>. In this blog, we focus on an orthogonal approach named **Ordinary Differential Equation (ODE) distillation**. This method introduces an auxiliary structure that bypasses explicit ODE solving, thereby reducing the Number of Function Evaluations (NFEs). As a result, we can generate high-quality samples with fewer denoising steps.
+This challenge has spurred research into acceleration strategies across multiple granular levels, including hardware optimization, mixed precision training<d-cite key="micikevicius2017mixed"></d-cite>, [quantization](https://github.com/bitsandbytes-foundation/bitsandbytes), parameter-efficient fine-tuning<d-cite key="hu2021lora"></d-cite>, and advanced solver<d-cite key="lu2025dpm"></d-cite>. In this blog, we focus on an orthogonal approach named **Ordinary Differential Equation (ODE) distillation**. This method introduces an auxiliary structure that bypasses explicit ODE solving, thereby reducing the Number of Function Evaluations (NFEs). As a result, we can generate high-quality samples with fewer denoising steps.
 
 Distillation, in general, is a technique that transfers knowledge from a complex, high-performance model (the *teacher*) to a more efficient, customized model (the *student*). Recent distillation methods have achieved remarkable reductions in sampling steps, from hundreds to a few and even **one** step, while preserving the sample quality. This advancement paves the way for real-time applications and deployment in resource-constrained environments.
 
@@ -252,6 +252,8 @@ $$
 \dv{t}f^\theta_{t \to 0}(\mathbf{x}, t, 0) = 0.
 $$
 
+This is intuitive since every point on the same probability flow ODE (\ref{eq:1}) trajectory should be mapped to the same clean data point $$\mathbf{x}_0$$.
+
 By substituting the parameterization of FACM, we have
 
 $$\require{physics}
@@ -262,9 +264,13 @@ Notice this is equivalent to [MeanFlow](#meanflow) where $$s=0$$. This indicates
 
 
 <span style="color: blue; font-weight: bold;">Training</span>: FACM training algorithm equipped with our flow map notation. Notice that $$d_1, d_2$$ are $\ell_2$ with cosine loss<d-footnote>$L_{\cos}(\mathbf{x}, \mathbf{y}) = 1 - \dfrac{\mathbf{x} \cdot \mathbf{y}}{\|\mathbf{x}\|_{2} \, \|\mathbf{y}\|_{2}}$</d-footnote> and norm $\ell_2$ loss<d-footnote>$L_{\text{norm}}(\mathbf{x}, \mathbf{y}) =\dfrac{\|\mathbf{x}-\mathbf{y}\|^2}{\sqrt{\|\mathbf{x}-\mathbf{y}\|^2+c}}$ where $c$ is a small constant. This is a special case of adaptive L2 loss proposed in MeanFlow<d-cite key="geng2025mean"></d-cite>.</d-footnote> respectively, plus reweighting. Interestingly, they separate the training of FM and CM on disentangled time intervals. When training with CM target, we let $$s=0, t\in[0,1]$$. On the other hand, we set $$t'=2-t, t'\in[1,2]$$ when training with FM anchors.
+
 <div class="row mt-3">
     <div class="col-sm mt-3 mt-md-0">
-        {% include figure.liquid loading="eager" path="/blog/2025/diff-distill/facm_training.png" class="img-fluid rounded z-depth-1" %}
+        {% include figure.liquid loading="eager" path="/blog/2025/diff-distill/FACM_training.png" class="img-fluid rounded z-depth-1" %}
+   <div class="caption">
+        The modified training algorithm of FACM<d-cite key="peng2025flow"></d-cite>. All the notations are adapted to our flow map.
+    </div> 
     </div>
 </div>
 
