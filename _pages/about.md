@@ -21,12 +21,15 @@ social: true  # includes social icons at the bottom of the page
 
 Welcome to the Renjie Liao's lab for Deep Structure Learning (DSL) at UBC!
 
-Our long-term research goals revolve around:
+<!-- Our long-term research goals revolve around:
 1. Perception: building machines that can learn structures (abstraction) from data
 2. Reasoning: building machines that can perform automated inference
-3. Understanding deep learning
+3. Understanding deep learning -->
 
-In particular, our current research areas involve:
+Our long-term research goal is to fundamentally understand and improve the memory mechanisms for intelligent systems. 
+We pursue this from both theoretical and computational perspectives, aiming to develop foundations that could lead to human-level or super-human AI.
+
+Our recent research covers:
 - Deep Generative Models
 - Geometric Deep Learning
 - Math/Algorithmic Reasoning with Transformers (e.g., LLMs)
@@ -34,4 +37,3 @@ In particular, our current research areas involve:
 - Visual Understanding and Reasoning
 - Motion Prediction and Planning in Self-driving
 - AI for Healthcare
-

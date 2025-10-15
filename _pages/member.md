@@ -10,7 +10,7 @@ nav_order: 3
 - [Renjie Liao](https://lrjconan.github.io/)
 
 **Postdoc Students**
-- [Tanzila Rahman](https://sites.google.com/view/tanzila-rahman/home) (Postdoc at Vector Institute, co-supervised with Leonid Sigal)
+
 
 **Graduate Students**
 - [Muchen Li](https://jojoml.github.io/) (CS PhD co-supervised with Leonid Sigal)
@@ -19,22 +19,28 @@ nav_order: 3
 - Donglin Yang (ECE PhD)
 - Yuanpei Gao (ECE PhD)
 - Mohammad Mahdi Kazemi (ECE PhD co-supervised with Purang Abolmaesumi)
-- Qihang Zhang (ECE PhD co-supervised with Lele Wang)
-- Jiahe Liu (ECE MASc co-supervised with Lele Wang)
-- Michael Liu (CS MSc co-supervised with Nick Harvey and Mijung Park)
-- Nima Kondori (ECE MASc co-supervised with Purang Abolmaesumi)
+- [Qihang Zhang](https://qihang-zhang.com/) (ECE PhD co-supervised with Lele Wang)
+- Anthony Cheng Xian (ECE PhD)
+- Zike Wu (ECE PhD co-supervised with Lele Wang)
+- Nick Zhang (ECE PhD)
+- Guanlong Jiao (ECE PhD)
+- Kevin Liu (ECE MASc)
+
 
 <!-- - [Hanwen Liang](https://scholar.google.ca/citations?user=mrOHvI8AAAAJ&hl=en) (ECE PhD) -->
 
 **Visiting Students**
-- Wenliang Liu (EE PhD at Zhejiang University)
-- Nick Zhang (CS Undergrad at University of Waterloo)
+- Zewei Zhang (ECE PhD at McMaster)
+- Param Mody (CS Undergrad at UBC)
 - Robin Yadav (CS Undergrad at UBC)
-- Kevin Liu (CS Undergrad at UBC)
-- Tayyib Chohan (ECE Undergrad at UBC)
+- Brain Zhang (CS Undergrad at Waterloo)
 
 
 **Alumni**
+- [Tanzila Rahman](https://sites.google.com/view/tanzila-rahman/home) (Postdoc at Vector Institute, co-supervised with Leonid Sigal)
+- Jiahe Liu (ECE MASc co-supervised with Lele Wang, now Software Engineer at Fortinet)
+- Nima Kondori (ECE MASc co-supervised with Purang Abolmaesumi)
+- Michael Liu (CS MSc co-supervised with Nick Harvey and Mijung Park)
 - Sadegh Mahdavi (ECE MASc co-supervised with Christos Thrampoulidis, now PhD at UBC)
 - [Aditya Chinchure](https://www.adityachinchure.com/) (CS MSc co-supervised with Leonid Sigal, now PhD at UBC)
 - [Masoud Mokhtari](https://www.masoudmokhtari.com/) (ECE MASc co-supervised with Purang Abolmaesumi, now Applied Scientist at Amazon)
@@ -42,6 +48,10 @@ nav_order: 3
 
 
 **Past Visiting Students**
+- Kevin Liu (CS Undergrad at UBC, now PhD at UBC)
+- Tayyib Chohan (ECE Undergrad at UBC)
+- Wenliang Liu (EE PhD at Zhejiang University)
+- Nick Zhang (CS Undergrad at University of Waterloo)
 - Felix Fu (CS Undergrad at UBC, WLIURA, now MASc at UBC)
 - Jade Clement (EngSci Undergrad at University of Toronto)
 - Evan Liu (CS Undergrad at UBC)
@@ -57,8 +67,10 @@ nav_order: 3
 
 
 **Collaborating Students**
-- Xiang Gao (CS PhD at Peking University)
 - Bian Du (CS PhD at Peking University)
+
+
+**Past Collaborating Students**
+- Xiang Gao (CS PhD at Peking University)
 - Bicheng Xu (CS PhD at UBC)
 - Hooman Vaseli (ECE PhD at UBC)
-

@@ -10,9 +10,18 @@ github_users:
   - michaelfliu
   
 github_repos:
+  - DSL-Lab/UniEdit-Flow
+  - DSL-Lab/StreamSplat
+  - DSL-Lab/TrajFlow
+  - DSL-Lab/MoFlow
+  - DSL-Lab/aops
+  - DSL-Lab/SymmetricDiffusers
+  - DSL-Lab/FVMD-frechet-video-motion-distance
   - DSL-Lab/GRBM
+  - DSL-Lab/GPGVAE
   - DSL-Lab/Specformer
   - DSL-Lab/clrs
   - DSL-Lab/echognn
   - DSL-Lab/SwinGNN
   - DSL-Lab/HPC_helper
+
