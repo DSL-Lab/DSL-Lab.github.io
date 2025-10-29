@@ -94,10 +94,6 @@ We provide some popular instances <d-footnote>We ignore the diffusion models wit
 
 The simplest form of conditional probability path is $$\mathbf{x}_t = (1-t)\mathbf{x}_0 + t\mathbf{x}_1$$ with the corresponding default conditional velocity field OT target $$v(\mathbf{x}_t, t \vert \mathbf{x}_0)=\mathbb{E}[\dot{\mathbf{x}}_t\vert \mathbf{x}_0]=\mathbf{x}_1- \mathbf{x}_0.$$
 
-Borrowed from this [slide](https://rectifiedflow.github.io/assets/slides/icml_07_distillation.pdf) at ICML2025, the objectives of ODE distillation have been categorized into three cases, i.e., (a) **forward loss**, (b) **backward loss** and (c) **self-consistency loss**. 
-
-
-
 <span style="color: blue; font-weight: bold;">Training</span>: Since minimizing the conditional Flow Matching (FM) loss is equivalent to minimize the marginal FM loss<d-cite key="lipman_flow_2023"></d-cite>, the optimization problem becomes
 
 $$
@@ -117,6 +113,8 @@ Before introducing ODE distillation methods, it is imperative to define a genera
 At its core, ODE distillation boils down to how to strategically construct the training objective of the flow map $$f_{t\to s}(\mathbf{x}_t, t, s)$$ so that it can be efficiently evaluated during sampling. In addition, we need to orchestrate the schedule of $$(t,s)$$ pairs for better training dynamics.
 
 In the context of distillation, the forward direction $$s<t$$ is typically taken as the target. Yet, the other direction can also carry meaningful structure. Notice in DDIM<d-cite key="song2020denoising"></d-cite> sampling, the conditional probability path is traversed twice. In our flow map formulation, this can be replaced with the flow maps $$f_{\tau_i\to 0}(\mathbf{x}_{\tau_i}, \tau_i, 0), f_{0\to \tau_{i-1}}(\mathbf{x}_0, 0, \tau_{i-1})$$ where $$0<\tau_{i-1}<\tau_i<1$$. Intuitively, the flow map $$f_{t\to s}(\mathbf{x}_t, t, s)$$ represents a direct mapping of some **displacement field** where $$F_{t\to s}(\mathbf{x}_t, t, s)$$ measures the increment which corresponds to a **velocity field**.
+
+Our unified framework is closely resembles the flow map<d-cite key="boffi2025build"></d-cite>, which transports points along trajectories of solutions to a probability flow ODE system. We provide some new insights on how this framework can connect with many popular distillation methods nowadays. Based on the [slide](https://rectifiedflow.github.io/assets/slides/icml_07_distillation.pdf), the objectives of ODE trajectory distillation have been categorized into three cases, i.e., (a) **forward loss**, (b) **backward loss** and (c) **self-consistency loss**. In the context of self-distilling a flow map model $$f_{t\to s}(\mathbf{x}_t, t, s)$$ from scratch<d-cite key="boffi2025build"></d-cite>, these objectives correspond to equivalent formulations under different names, (a) **Lagrangian Map Distillation loss** (b) **Eulerian Map Distillation loss** and (c) **Progressive self-distillation loss**.
 
 ### MeanFlow 
 
