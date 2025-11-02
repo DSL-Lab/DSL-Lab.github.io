@@ -14,13 +14,14 @@ nav_order: 3
 
 **Graduate Students**
 - [Muchen Li](https://jojoml.github.io/) (CS PhD co-supervised with Leonid Sigal)
-- [Qi Yan](https://qiyan98.github.io/) (ECE PhD co-supervised with Lele Wang)
 - [Sadegh Mahdavi](https://smahdavi.com/) (ECE PhD co-supervised with Christos Thrampoulidis)
+- [Qi Yan](https://qiyan98.github.io/) (ECE PhD co-supervised with Lele Wang)
 - Donglin Yang (ECE PhD)
 - Yuanpei Gao (ECE PhD)
-- Mohammad Mahdi Kazemi (ECE PhD co-supervised with Purang Abolmaesumi)
 - [Qihang Zhang](https://qihang-zhang.com/) (ECE PhD co-supervised with Lele Wang)
+- Mohammad Mahdi Kazemi (ECE PhD co-supervised with Purang Abolmaesumi)
 - Anthony Cheng Xian (ECE PhD)
+- Felix Fu (ECE MASc)
 - Zike Wu (ECE PhD co-supervised with Lele Wang)
 - Nick Zhang (ECE PhD)
 - Guanlong Jiao (ECE PhD)
