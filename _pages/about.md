@@ -27,7 +27,7 @@ Welcome to the Renjie Liao's lab for Deep Structure Learning (DSL) at UBC!
 3. Understanding deep learning -->
 
 Our long-term research goal is to build superintelligent AI agents.
-We pursue this from both theoretical and computational perspectives, aiming to develop foundations (e.g., memory mechanisms) that could lead to superintelligence.
+We pursue this from both theoretical and practical perspectives, aiming to develop foundations (e.g., long-term memory mechanisms) that could lead to superintelligence.
 
 Our recent research covers:
 - Deep Generative Models
