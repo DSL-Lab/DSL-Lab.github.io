@@ -27,7 +27,6 @@ nav_order: 3
 - Guanlong Jiao (ECE PhD)
 - Kevin Liu (ECE MASc)
 
-
 <!-- - [Hanwen Liang](https://scholar.google.ca/citations?user=mrOHvI8AAAAJ&hl=en) (ECE PhD) -->
 
 **Visiting Students**
@@ -40,9 +39,9 @@ nav_order: 3
 **Alumni**
 - [Tanzila Rahman](https://sites.google.com/view/tanzila-rahman/home) (Postdoc at Vector Institute, co-supervised with Leonid Sigal)
 - Jiahe Liu (ECE MASc co-supervised with Lele Wang, now Software Engineer at Fortinet)
-- Nima Kondori (ECE MASc co-supervised with Purang Abolmaesumi)
-- Michael Liu (CS MSc co-supervised with Nick Harvey and Mijung Park)
-- Sadegh Mahdavi (ECE MASc co-supervised with Christos Thrampoulidis, now PhD at UBC)
+- [Nima Kondori](https://nimakondori.github.io/) (ECE MASc co-supervised with Purang Abolmaesumi, now Senior Machine Learning Scientist at Lily AI)
+- Michael Liu (CS MSc co-supervised with Nick Harvey and Mijung Park, now Intern at Global Relay)
+- [Sadegh Mahdavi](https://smahdavi.com/) (ECE MASc co-supervised with Christos Thrampoulidis, now PhD at UBC)
 - [Aditya Chinchure](https://www.adityachinchure.com/) (CS MSc co-supervised with Leonid Sigal, now PhD at UBC)
 - [Masoud Mokhtari](https://www.masoudmokhtari.com/) (ECE MASc co-supervised with Purang Abolmaesumi, now Applied Scientist at Amazon)
 - [Emmanuel Sales](https://emsal.me/) (CS MSc co-supervised with Nick Harvey, now Software Engineer at Google)
