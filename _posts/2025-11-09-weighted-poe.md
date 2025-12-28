@@ -22,4 +22,4 @@ authors:
 </script>
 
 If you are not redirected automatically, you can read the full post here:
-[Test-Time Steering for Lossless Text Compression via Weighted Product of Experts](https://qihang-zhang.com/Learning-Sys-Blog/2025/10/15/weighted-product-of-experts.html).
+[Test-Time Steering for Lossless Text Compression via Weighted Product of Experts](https://blog.qihang-zhang.com/2025/10/15/weighted-product-of-experts.html).
