@@ -27,7 +27,6 @@ nav_order: 3
 - Guanlong Jiao (ECE PhD)
 - Kevin Liu (ECE MASc)
 
-
 <!-- - [Hanwen Liang](https://scholar.google.ca/citations?user=mrOHvI8AAAAJ&hl=en) (ECE PhD) -->
 
 **Visiting Students**
@@ -40,9 +39,9 @@ nav_order: 3
 **Alumni**
 - [Tanzila Rahman](https://sites.google.com/view/tanzila-rahman/home) (Postdoc at Vector Institute, co-supervised with Leonid Sigal)
 - Jiahe Liu (ECE MASc co-supervised with Lele Wang, now Software Engineer at Fortinet)
-- Nima Kondori (ECE MASc co-supervised with Purang Abolmaesumi)
-- Michael Liu (CS MSc co-supervised with Nick Harvey and Mijung Park)
-- Sadegh Mahdavi (ECE MASc co-supervised with Christos Thrampoulidis, now PhD at UBC)
+- [Nima Kondori](https://nimakondori.github.io/) (ECE MASc co-supervised with Purang Abolmaesumi, now Senior Machine Learning Scientist at Lily AI)
+- Michael Liu (CS MSc co-supervised with Nick Harvey and Mijung Park, now Intern at Global Relay)
+- [Sadegh Mahdavi](https://smahdavi.com/) (ECE MASc co-supervised with Christos Thrampoulidis, now PhD at UBC)
 - [Aditya Chinchure](https://www.adityachinchure.com/) (CS MSc co-supervised with Leonid Sigal, now PhD at UBC)
 - [Masoud Mokhtari](https://www.masoudmokhtari.com/) (ECE MASc co-supervised with Purang Abolmaesumi, now Applied Scientist at Amazon)
 - [Emmanuel Sales](https://emsal.me/) (CS MSc co-supervised with Nick Harvey, now Software Engineer at Google)
@@ -52,18 +51,18 @@ nav_order: 3
 - Kevin Liu (CS Undergrad at UBC, now PhD at UBC)
 - Tayyib Chohan (ECE Undergrad at UBC)
 - Wenliang Liu (EE PhD at Zhejiang University)
-- Nick Zhang (CS Undergrad at University of Waterloo)
+- Nick Zhang (CS Undergrad at University of Waterloo, now PhD at UBC)
 - Felix Fu (CS Undergrad at UBC, WLIURA, now MASc at UBC)
 - Jade Clement (EngSci Undergrad at University of Toronto)
-- Evan Liu (CS Undergrad at UBC)
-- Youran Qu (CS Undergrad at Peking University)
+- Evan Liu (CS Undergrad at UBC, now Software Engineer at Amazon)
+- Youran Qu (CS Undergrad at Peking University, now MSc at Dartmouth College)
 - Anthony Cheng Xian (CS Undergrad at UBC, USRA, now PhD at UBC)
 - Daniel Yang (EE Undergrad at National Taiwan University, now MSc at CMU)
 - Yutong Zhang (CS Undergrad at UBC, now PhD at Georgia Tech)
 - Vicky Xie (ECE Undergrad at UBC, now MSc at CMU)
 - Xue Yu (Stats PhD at Renmin University of China)
 - [Deyu Bo](https://bdy9527.github.io/) (CS PhD at Beijing University of Posts and Telecommunications, now research fellow at National University of Singapore)
-- Zhengyang Liang (CS Undergrad at Tongji University)
+- Zhengyang Liang (CS Undergrad at Tongji University, now PhD at UofT)
 - Joshua White (EnPh Undergrad at UBC, now Engineer at Tesla)
 
 
