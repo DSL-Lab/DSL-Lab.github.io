@@ -7,7 +7,7 @@ tags: large-language-models lossless-compression mixture-of-experts information-
 giscus_comments: true
 date: 2025-11-09
 featured: true
-redirect: https://qihang-zhang.com/Learning-Sys-Blog/2025/10/15/weighted-product-of-experts.html
+redirect: https://blog.qihang-zhang.com/2025/10/15/weighted-product-of-experts.html
 
 authors:
   - name: Qihang Zhang
@@ -18,7 +18,7 @@ authors:
 ---
 
 <script>
-  window.location.replace("https://qihang-zhang.com/Learning-Sys-Blog/2025/10/15/weighted-product-of-experts.html");
+  window.location.replace("https://blog.qihang-zhang.com/2025/10/15/weighted-product-of-experts.html");
 </script>
 
 If you are not redirected automatically, you can read the full post here:
